@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
+import { FoodrecordModule } from './foodrecord/foodrecord.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { UserModule } from './user/user.module';
       process.env.MONGO_URI || 'mongodb://localhost:27017/calorieCounter',
     ),
     UserModule,
+    FoodrecordModule,
   ],
   controllers: [AppController],
   providers: [AppService],
