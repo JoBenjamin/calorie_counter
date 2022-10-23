@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IsDate, IsNotEmpty, IsPositive, IsString } from 'class-validator';
 import { Document } from 'mongoose';
 
-export type UserDocument = FoodRecord & Document;
+export type FoodRecordDocument = FoodRecord & Document;
 
 @Schema()
 export class FoodRecord {
