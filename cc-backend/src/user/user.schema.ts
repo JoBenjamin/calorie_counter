@@ -12,6 +12,9 @@ export class User {
   lastName: string;
 
   @Prop()
+  email: string;
+
+  @Prop()
   dailyCalorieLimit: number;
 }
 
