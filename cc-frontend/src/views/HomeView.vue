@@ -1,9 +1,10 @@
-<script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
-</script>
-
-<template>
-  <main>
-    <TheWelcome />
-  </main>
+<template lang="pug">
+main
+  AddEntryWidget
+  FoodEntryTable
 </template>
+
+<script setup lang="ts">
+import FoodEntryTable from "@/components/FoodEntryTable.vue";
+import AddEntryWidget from "@/components/AddEntryWidget.vue";
+</script>
