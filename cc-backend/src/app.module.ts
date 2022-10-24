@@ -4,6 +4,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { FoodrecordModule } from './foodrecord/foodrecord.module';
+import { AuthModule } from './auth/auth.module';
+import { CommandModule } from 'nestjs-command';
+import { SeederModule } from './seeder/seeder.module';
 
 @Module({
   imports: [
@@ -12,6 +15,9 @@ import { FoodrecordModule } from './foodrecord/foodrecord.module';
     ),
     UserModule,
     FoodrecordModule,
+    AuthModule,
+    CommandModule,
+    SeederModule,
   ],
   controllers: [AppController],
   providers: [AppService],

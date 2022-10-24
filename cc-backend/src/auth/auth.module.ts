@@ -1,0 +1,11 @@
+import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+import { UserSchema } from 'src/user/user.schema';
+import { AuthService } from './auth.service';
+import { BearerStrategy } from './bearer.strategy';
+
+@Module({
+  imports: [MongooseModule.forFeature([{ name: 'User', schema: UserSchema }])],
+  providers: [AuthService, BearerStrategy],
+})
+export class AuthModule {}
