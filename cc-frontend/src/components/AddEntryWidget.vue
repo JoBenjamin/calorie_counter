@@ -60,12 +60,12 @@ const submitData = async () => {
     });
     dialogOpen.value = false;
     resetFieldData();
+    foodRecord.fetchFoodRecords();
   } catch (error) {
     console.log(error);
   } finally {
     loading.value = false;
   }
-  console.log("submitting data", formState);
 };
 
 const $v = useVuelidate(validationRules, formState);

@@ -10,6 +10,7 @@ interface createFoodRecordDto {
 }
 
 export const useFoodRecordStore = defineStore("foodRecord", {
+  state: () => ({ foodRecords: [] }),
   actions: {
     async submitFoodRecord(data: createFoodRecordDto) {
       try {
@@ -18,5 +19,16 @@ export const useFoodRecordStore = defineStore("foodRecord", {
         console.log(error);
       }
     },
+    async fetchFoodRecords() {
+      try {
+        const response = await axios.get(`${baseUrl}/foodrecord`);
+        this.foodRecords = response.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
+  getters: {
+    getFoodRecords: (state) => state.foodRecords,
   },
 });

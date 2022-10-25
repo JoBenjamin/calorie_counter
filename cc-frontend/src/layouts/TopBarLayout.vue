@@ -5,7 +5,7 @@
         .text-2xl.text-color.mr-4.font-light {{authStore.email}}
     .py-3.px-5.flex-grow-1
         slot(v-if="authStore.email")
-        ErrorCard(v-else error-message="Couldn't authenticate user") 
+        ErrorCard(v-else-if="authStore.authError" error-message="Couldn't authenticate user") 
 </template>
 
 <script setup lang="ts">
