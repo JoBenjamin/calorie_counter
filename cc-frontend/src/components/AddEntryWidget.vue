@@ -1,7 +1,7 @@
 <template lang="pug">
 .w-full.pb-5.pt-3
     PButton(label="New entry" icon="pi pi-plus" @click="dialogOpen = true")
-    Dialog(v-model:visible="dialogOpen" header="Add new food entry").w-4
+    Dialog(v-model:visible="dialogOpen" header="Add new food entry" @hide="resetFieldData" ).w-4
         .card
             .field.h-5rem
                 label(for="name") Name
@@ -15,7 +15,7 @@
                 label(for="date") Date
                 Calendar(id="date" v-model="formState.date" :max-date="new Date()").w-full
         template(#footer)
-            PButton(label="Submit" @click="$v.$validate")
+            PButton(label="Submit" @click="submitData" :loading="loading")
             PButton(label="Cancel" class="p-button-secondary" @click="dialogOpen = false")
 </template>
 
@@ -23,6 +23,11 @@
 import { reactive, ref } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, minValue } from "@vuelidate/validators";
+import { useFoodRecordStore } from "@/stores/foodRecord";
+
+const foodRecord = useFoodRecordStore();
+const loading = ref(false);
+const dialogOpen = ref(false);
 
 const formState = reactive({
   name: "",
@@ -35,7 +40,33 @@ const validationRules = {
   calories: { required, minValue: minValue(1) },
 };
 
-const $v = useVuelidate(validationRules, formState);
+const resetFieldData = () => {
+  formState.calories = 0;
+  formState.date = new Date();
+  formState.name = "";
+  $v.value.$reset();
+};
 
-const dialogOpen = ref(false);
+const submitData = async () => {
+  $v.value.$touch();
+  if ($v.value.$invalid) return;
+
+  try {
+    loading.value = true;
+    await foodRecord.submitFoodRecord({
+      name: formState.name,
+      calorieCount: formState.calories,
+      date: formState.date.toISOString(),
+    });
+    dialogOpen.value = false;
+    resetFieldData();
+  } catch (error) {
+    console.log(error);
+  } finally {
+    loading.value = false;
+  }
+  console.log("submitting data", formState);
+};
+
+const $v = useVuelidate(validationRules, formState);
 </script>
