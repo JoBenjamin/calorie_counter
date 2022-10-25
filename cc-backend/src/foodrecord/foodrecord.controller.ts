@@ -2,7 +2,7 @@ import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { createFoodRecordDto } from './foodrecord.dto';
-import { FoodRecordDocument } from './foodrecord.schema';
+import { FoodRecord, FoodRecordDocument } from './foodrecord.schema';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('foodrecord')
@@ -17,8 +17,12 @@ export class FoodrecordController {
     @Body() createFoodRecordDto: createFoodRecordDto,
     @Req() req,
   ) {
-    const newRecord = await this.foodRecordModel.create(createFoodRecordDto);
-    console.log('New food entry created by: ', req.user);
+    const foodRecordPrimer: FoodRecord = {
+      ...createFoodRecordDto,
+      date: new Date(createFoodRecordDto.date),
+      user: req.user._id,
+    };
+    const newRecord = await this.foodRecordModel.create(foodRecordPrimer);
     return newRecord;
   }
 }

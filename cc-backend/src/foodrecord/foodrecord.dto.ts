@@ -4,6 +4,7 @@ import { FoodRecord } from './foodrecord.schema';
 
 export class createFoodRecordDto extends OmitType(FoodRecord, [
   'date',
+  'user',
 ] as const) {
   @IsNotEmpty()
   @IsDateString()
