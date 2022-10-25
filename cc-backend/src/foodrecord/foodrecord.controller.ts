@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { createFoodRecordDto } from './foodrecord.dto';
@@ -12,6 +12,7 @@ export class FoodrecordController {
     @InjectModel('FoodRecord')
     private foodRecordModel: Model<FoodRecordDocument>,
   ) {}
+
   @Post()
   async createFoodRecord(
     @Body() createFoodRecordDto: createFoodRecordDto,
@@ -24,5 +25,11 @@ export class FoodrecordController {
     };
     const newRecord = await this.foodRecordModel.create(foodRecordPrimer);
     return newRecord;
+  }
+
+  @Get()
+  async getFoodRecords(@Req() req) {
+    const foodRecords = await this.foodRecordModel.find({ user: req.user._id });
+    return foodRecords;
   }
 }
