@@ -1,8 +1,15 @@
 <template lang="pug">
-DataTable(:value="foodRecord.getFoodRecords" :loading="loading")
-    Column(field="name" header="Name")
-    Column(field="calorieCount" header="Calories")
-    Column(field="date" header="Date")
+DataTable(:value="filteredFoodRecords" :loading="loading" :paginator="true" :rows="10")
+    template(#empty)
+      .text-lg.text-color.text-center No records found
+    template(#header)
+      .flex.align-items-center.justify-content-end
+        .text-lg.text-color.mr-3 Date filter:
+        Calendar(selection-mode="range" v-model="dateFilter")
+        PButton(v-if="dateFilter.length && dateFilter.some(date => date)" @click="dateFilter=[]" icon="pi pi-times" class="p-button-rounded p-button-text") 
+    Column(field="name" header="Name" :sortable="true")
+    Column(field="calorieCount" header="Calories" :sortable="true")
+    Column(field="date" header="Date" :sortable="true")
       template(#body="{ data }")
         .text-lg {{formatDate(data.date)}}
 </template>
@@ -11,10 +18,26 @@ DataTable(:value="foodRecord.getFoodRecords" :loading="loading")
 import { onMounted, ref } from "vue";
 import { useFoodRecordStore } from "@/stores/foodRecord";
 import dayjs from "dayjs";
+import { computed } from "@vue/reactivity";
 
 const loading = ref(false);
 
 const foodRecord = useFoodRecordStore();
+
+const filteredFoodRecords = computed(() => {
+  if (dateFilter.value.length < 2 || dateFilter.value.some((date) => !date))
+    return foodRecord.getFoodRecords;
+  const startDate = dayjs(dateFilter.value[0]);
+  const endDate = dayjs(dateFilter.value[1]);
+  return foodRecord.getFoodRecords.filter((record) => {
+    return (
+      dayjs(record.date).isAfter(startDate.subtract(1, "d")) &&
+      dayjs(record.date).isBefore(endDate.add(1, "d"))
+    );
+  });
+});
+
+const dateFilter = ref([]);
 
 const formatDate = (dateString: string) => {
   if (!dateString) return "";
