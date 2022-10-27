@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {
+  IsArray,
   IsEmail,
+  IsEnum,
   IsNotEmpty,
   IsPositive,
   IsString,
@@ -9,6 +11,10 @@ import {
 import { Document } from 'mongoose';
 
 export type UserDocument = User & Document;
+
+export enum UserRolesEnum {
+  ADMIN = 'ADMIN',
+}
 
 @Schema()
 export class User {
@@ -39,6 +45,11 @@ export class User {
   @Prop()
   @IsPositive()
   dailyCalorieLimit: number;
+
+  @Prop()
+  @IsArray()
+  @IsEnum(UserRolesEnum, { each: true })
+  roles: UserRolesEnum[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
