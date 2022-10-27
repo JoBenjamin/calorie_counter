@@ -29,7 +29,12 @@ export class FoodrecordController {
 
   @Get()
   async getFoodRecords(@Req() req) {
-    const foodRecords = await this.foodRecordModel.find({ user: req.user._id });
+    let foodRecords;
+    if (req.user.roles.includes('ADMIN')) {
+      foodRecords = await this.foodRecordModel.find().populate('user', 'email');
+    } else {
+      foodRecords = await this.foodRecordModel.find({ user: req.user._id });
+    }
     return foodRecords;
   }
 }
