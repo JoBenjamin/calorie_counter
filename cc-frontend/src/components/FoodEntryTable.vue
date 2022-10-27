@@ -8,6 +8,7 @@ DataTable(:value="filteredFoodRecords" :loading="loading" :paginator="true" :row
         Calendar(selection-mode="range" v-model="dateFilter")
         PButton(v-if="dateFilter.length && dateFilter.some(date => date)" @click="dateFilter=[]" icon="pi pi-times" class="p-button-rounded p-button-text") 
     Column(field="name" header="Name" :sortable="true")
+    Column( v-if="auth.getRoles.includes('ADMIN')" field="user.email" header="User" :sortable="true")
     Column(field="calorieCount" header="Calories" :sortable="true")
     Column(field="date" header="Date" :sortable="true")
       template(#body="{ data }")
@@ -19,8 +20,10 @@ import { onMounted, ref } from "vue";
 import { useFoodRecordStore } from "@/stores/foodRecord";
 import dayjs from "dayjs";
 import { computed } from "@vue/reactivity";
+import { useAuthStore } from "@/stores/auth";
 
 const loading = ref(false);
+const auth = useAuthStore();
 
 const foodRecord = useFoodRecordStore();
 
