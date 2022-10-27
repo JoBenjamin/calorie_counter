@@ -30,6 +30,7 @@ import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 import "@/assets/main.css";
 import "@/assets/fonts.css";
+import { useAuthStore } from "./stores/auth";
 
 app.use(PrimeVue);
 app.use(pinia);
@@ -40,6 +41,23 @@ app.component("Dialog", Dialog);
 app.component("Calendar", Calendar);
 app.component("InputText", InputText);
 app.component("InputNumber", InputNumber);
+
+const auth = useAuthStore();
+
+router.beforeEach((to) => {
+  if (to.meta.roles) {
+    const requiredRoles = to.meta.roles as string[];
+    const userRoles = auth.getRoles as string[];
+    if (
+      requiredRoles.some((role) => {
+        return userRoles.includes(role);
+      })
+    ) {
+      return true;
+    }
+    return "/";
+  }
+});
 
 app.use(router);
 

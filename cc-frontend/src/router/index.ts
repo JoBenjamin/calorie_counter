@@ -20,6 +20,9 @@ const router = createRouter({
       path: "/stats",
       name: "stats",
       component: StatsView,
+      meta: {
+        roles: ["ADMIN"],
+      },
     },
   ],
 });
