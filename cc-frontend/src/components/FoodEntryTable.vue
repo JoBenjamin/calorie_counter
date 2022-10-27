@@ -8,11 +8,15 @@ DataTable(:value="filteredFoodRecords" :loading="loading" :paginator="true" :row
         Calendar(selection-mode="range" v-model="dateFilter")
         PButton(v-if="dateFilter.length && dateFilter.some(date => date)" @click="dateFilter=[]" icon="pi pi-times" class="p-button-rounded p-button-text") 
     Column(field="name" header="Name" :sortable="true")
-    Column( v-if="auth.getRoles.includes('ADMIN')" field="user.email" header="User" :sortable="true")
+    Column(v-if="auth.getRoles.includes('ADMIN')" field="user.email" header="User" :sortable="true")
     Column(field="calorieCount" header="Calories" :sortable="true")
     Column(field="date" header="Date" :sortable="true")
       template(#body="{ data }")
         .text-lg {{formatDate(data.date)}}
+    Column(header="Actions" field="_id")
+      template(#body="{ data }")
+        PButton(icon="pi pi-pencil" class="p-button-rounded p-button-text" @click="handleEditItem(data)")
+        PButton(icon="pi pi-trash" class="p-button-rounded p-button-text" @click="handleDeleteItem(data._id)")
 </template>
 
 <script lang="ts" setup>
@@ -26,6 +30,14 @@ const loading = ref(false);
 const auth = useAuthStore();
 
 const foodRecord = useFoodRecordStore();
+
+const handleDeleteItem = (id) => {
+  console.log("delete", id);
+};
+
+const handleEditItem = (id) => {
+  console.log("edit", id);
+};
 
 const filteredFoodRecords = computed(() => {
   if (dateFilter.value.length < 2 || dateFilter.value.some((date) => !date))

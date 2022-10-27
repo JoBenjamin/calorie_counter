@@ -23,6 +23,6 @@ export const useAuthStore = defineStore("auth", {
     },
   },
   getters: {
-    getRoles: (state) => state.roles,
+    getRoles: (state): string[] => state.roles,
   },
 });
