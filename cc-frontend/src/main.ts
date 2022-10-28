@@ -11,7 +11,9 @@ import Column from "primevue/column";
 import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
+import ConfirmDialog from "primevue/confirmdialog";
 import Calendar from "primevue/calendar";
+import ConfirmationService from "primevue/confirmationservice";
 
 import axios from "axios";
 
@@ -33,6 +35,7 @@ import "@/assets/fonts.css";
 import { useAuthStore } from "./stores/auth";
 
 app.use(PrimeVue);
+app.use(ConfirmationService);
 app.use(pinia);
 app.component("PButton", Button);
 app.component("DataTable", DataTable);
@@ -41,6 +44,7 @@ app.component("Dialog", Dialog);
 app.component("Calendar", Calendar);
 app.component("InputText", InputText);
 app.component("InputNumber", InputNumber);
+app.component("ConfirmDialog", ConfirmDialog);
 
 const auth = useAuthStore();
 

@@ -27,6 +27,14 @@ export const useFoodRecordStore = defineStore("foodRecord", {
         console.log(error);
       }
     },
+    async deleteFoodRecord(id: string) {
+      try {
+        await axios.delete(`${baseUrl}/foodrecord/${id}`);
+        await this.fetchFoodRecords();
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
   getters: {
     getFoodRecords: (state) => state.foodRecords,

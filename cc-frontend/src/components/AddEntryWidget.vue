@@ -31,7 +31,7 @@ const dialogOpen = ref(false);
 
 const formState = reactive({
   name: "",
-  calories: 0,
+  calories: null as number | null,
   date: new Date(),
 });
 
@@ -55,7 +55,7 @@ const submitData = async () => {
     loading.value = true;
     await foodRecord.submitFoodRecord({
       name: formState.name,
-      calorieCount: formState.calories,
+      calorieCount: formState.calories || 0,
       date: formState.date.toISOString(),
     });
     dialogOpen.value = false;
