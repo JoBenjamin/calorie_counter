@@ -179,5 +179,5 @@ const resetFieldData = () => {
   formState.id = "";
   $v.value.$reset();
 };
-const $v = useVuelidate(validationRules, formState);
+const $v = useVuelidate(validationRules, formState, { $scope: false });
 </script>

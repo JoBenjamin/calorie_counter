@@ -17,6 +17,7 @@ import Calendar from "primevue/calendar";
 import Toast from "primevue/toast";
 import ConfirmationService from "primevue/confirmationservice";
 import ToastService from "primevue/toastservice";
+import Tooltip from "primevue/tooltip";
 
 import axios from "axios";
 
@@ -51,6 +52,7 @@ app.component("InputNumber", InputNumber);
 app.component("Dropdown", Dropdown);
 app.component("ConfirmDialog", ConfirmDialog);
 app.component("Toast", Toast);
+app.directive("tooltip", Tooltip);
 
 const auth = useAuthStore();
 

@@ -106,5 +106,5 @@ const submitData = async () => {
   }
 };
 
-const $v = useVuelidate(validationRules, formState);
+const $v = useVuelidate(validationRules, formState, { $scope: false });
 </script>

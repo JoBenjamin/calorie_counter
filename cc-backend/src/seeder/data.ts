@@ -1,7 +1,7 @@
 import { hashPassword } from 'src/util/hashPassword';
 import { v4 as uuid } from 'uuid';
 
-const dailyCalorieLimit = 2100;
+export const dailyCalorieLimit = 2100;
 
 export const testUsers = [
   {

@@ -34,11 +34,17 @@ export class FoodrecordController {
     @Req() req,
   ) {
     const foodRecordPrimer = {
-      ...createFoodRecordDto,
+      user: null as mongoose.Types.ObjectId,
+      name: createFoodRecordDto.name,
       date: new Date(createFoodRecordDto.date),
+      calorieCount: createFoodRecordDto.calorieCount,
     };
     if (!createFoodRecordDto.user) {
       foodRecordPrimer.user = req.user._id;
+    } else {
+      foodRecordPrimer.user = new mongoose.Types.ObjectId(
+        createFoodRecordDto.user,
+      );
     }
     const newRecord = await this.foodRecordModel.create(foodRecordPrimer);
     return newRecord;

@@ -20,5 +20,9 @@ export const useUserStore = defineStore("user", {
         console.log(error);
       }
     },
+    async inviteFriend(email: string) {
+      const response = await axios.post(`${baseUrl}/user/invite`, { email });
+      return response;
+    },
   },
 });
