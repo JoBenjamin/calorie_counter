@@ -1,6 +1,10 @@
 <template lang="pug">
-.w-full.pb-5.pt-3
+.w-full.pb-5.pt-3.flex.justify-content-between
     PButton(label="New entry" icon="pi pi-plus" @click="dialogOpen = true")
+    .flex.align-items-center
+      .text-3xl(:class="{'text-red-600': isOverLimit, 'text-primary': !isOverLimit}") {{stat.todaysCalorieCount}} 
+      .text-3xl.mx-2 /
+      .text-3xl.text-color {{stat.maxDailyCalorieCount}}
     Dialog(v-model:visible="dialogOpen" header="Add new food entry" @hide="resetFieldData" ).w-4
         .card
             .field.h-5rem
@@ -20,16 +24,22 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, minValue } from "@vuelidate/validators";
 import { useFoodRecordStore } from "@/stores/foodRecord";
+import { useStatStore } from "@/stores/stat";
 import { useToast } from "primevue/usetoast";
 
 const foodRecord = useFoodRecordStore();
+const stat = useStatStore();
 const loading = ref(false);
 const dialogOpen = ref(false);
 const toast = useToast();
+
+const isOverLimit = computed(() => {
+  return stat.todaysCalorieCount > stat.maxDailyCalorieCount;
+});
 
 const formState = reactive({
   name: "",
@@ -43,7 +53,7 @@ const validationRules = {
 };
 
 const resetFieldData = () => {
-  formState.calories = 0;
+  formState.calories = null;
   formState.date = new Date();
   formState.name = "";
   $v.value.$reset();
@@ -64,6 +74,7 @@ const submitData = async () => {
     dialogOpen.value = false;
     resetFieldData();
     foodRecord.fetchFoodRecords();
+    stat.fetchTodaysCalorieCount();
     toast.add({
       severity: "success",
       summary: "Item successfully added!",

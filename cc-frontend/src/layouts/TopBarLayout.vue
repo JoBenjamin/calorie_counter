@@ -16,10 +16,13 @@ import { onMounted } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import ErrorCard from "@/components/ErrorCard.vue";
 import NavBarWidget from "@/components/NavBarWidget.vue";
+import { useStatStore } from "@/stores/stat";
 
 const authStore = useAuthStore();
+const stat = useStatStore();
 
 onMounted(() => {
   authStore.fetchAuth();
+  stat.fetchTodaysCalorieCount();
 });
 </script>
