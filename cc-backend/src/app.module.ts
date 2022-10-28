@@ -7,6 +7,7 @@ import { FoodrecordModule } from './foodrecord/foodrecord.module';
 import { AuthModule } from './auth/auth.module';
 import { CommandModule } from 'nestjs-command';
 import { SeederModule } from './seeder/seeder.module';
+import { StatModule } from './stat/stat.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { SeederModule } from './seeder/seeder.module';
     AuthModule,
     CommandModule,
     SeederModule,
+    StatModule,
   ],
   controllers: [AppController],
   providers: [AppService],

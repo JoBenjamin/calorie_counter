@@ -13,6 +13,11 @@ export class BearerStrategy extends PassportStrategy(Strategy) {
     if (!user) {
       throw new UnauthorizedException();
     }
-    return { _id: user._id, email: user.email, roles: user.roles };
+    return {
+      _id: user._id,
+      email: user.email,
+      roles: user.roles,
+      dailyCalorieLimit: user.dailyCalorieLimit,
+    };
   }
 }
