@@ -1,5 +1,6 @@
 import axios from "axios";
 import { defineStore } from "pinia";
+import { useAuthStore } from "./auth";
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
@@ -24,6 +25,9 @@ export const useStatStore = defineStore("stat", {
       }
     },
     async fetchAdminStats() {
+      const auth = useAuthStore();
+      const roles = auth.roles;
+      if (!roles.includes("ADMIN")) return;
       try {
         const response = await axios.get(`${baseUrl}/stat/admin`);
         this.lastSevenDayItemCount = response?.data.lastSeven || 0;

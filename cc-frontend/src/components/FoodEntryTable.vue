@@ -139,13 +139,16 @@ const submitData = async () => {
 };
 
 const filteredFoodRecords = computed(() => {
+  if (dateFilter.value[0]) {
+    console.log(new Date(dateFilter.value[0]).toISOString());
+  }
   if (dateFilter.value.length < 2 || dateFilter.value.some((date) => !date))
     return foodRecord.getFoodRecords;
   const startDate = dayjs(dateFilter.value[0]);
   const endDate = dayjs(dateFilter.value[1]);
   return foodRecord.getFoodRecords.filter((record) => {
     return (
-      dayjs(record.date).isAfter(startDate.startOf("d")) &&
+      dayjs(record.date).isAfter(startDate.startOf("d").subtract(1, "s")) &&
       dayjs(record.date).isBefore(endDate.endOf("d"))
     );
   });
