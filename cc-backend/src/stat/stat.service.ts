@@ -29,4 +29,57 @@ export class StatService {
 
     return calorieCount;
   }
+
+  async getAdminStats() {
+    return {
+      lastSeven: await this.getLastSevenDaysCount(),
+      weekBefore: await this.getWeekBeforeCount(),
+      userAverage: await this.getUserAverage(),
+    };
+  }
+
+  async getLastSevenDaysCount() {
+    const marker = dayjs().subtract(7, 'd').toDate();
+    const items = await this.foodRecordModel.find({
+      date: {
+        $gte: marker,
+      },
+    });
+    return items.length;
+  }
+
+  async getWeekBeforeCount() {
+    const firstMarker = dayjs().subtract(14, 'd').toDate();
+    const secondMarker = dayjs().subtract(7, 'd').toDate();
+    const items = await this.foodRecordModel.find({
+      date: {
+        $gte: firstMarker,
+        $lt: secondMarker,
+      },
+    });
+    return items.length;
+  }
+
+  async getUserAverage() {
+    const marker = dayjs().subtract(7, 'd').toDate();
+    const items = await this.foodRecordModel.find({
+      date: {
+        $gte: marker,
+      },
+    });
+
+    const totalCalories = items.reduce(
+      (prev, current) => prev + current.calorieCount,
+      0,
+    );
+
+    const userSet = new Set();
+
+    items.forEach((item) => {
+      userSet.add(item.user.toString());
+    });
+
+    const average = (totalCalories / userSet.size).toFixed(0);
+    return average;
+  }
 }
