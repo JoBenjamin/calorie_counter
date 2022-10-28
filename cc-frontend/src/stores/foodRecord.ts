@@ -14,6 +14,13 @@ interface editFoodRecordDto extends createFoodRecordDto {
   _id: string;
 }
 
+interface FoodRecord {
+  name: string;
+  calorieCount: number;
+  date: string;
+  user: string;
+}
+
 export const useFoodRecordStore = defineStore("foodRecord", {
   state: () => ({ foodRecords: [] }),
   actions: {
@@ -37,6 +44,6 @@ export const useFoodRecordStore = defineStore("foodRecord", {
     },
   },
   getters: {
-    getFoodRecords: (state) => state.foodRecords,
+    getFoodRecords: (state): FoodRecord[] => state.foodRecords,
   },
 });

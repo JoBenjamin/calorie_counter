@@ -3,10 +3,15 @@ DataTable(:value="filteredFoodRecords" :loading="loading" :paginator="true" :row
     template(#empty)
       .text-lg.text-color.text-center No records found
     template(#header)
-      .flex.align-items-center.justify-content-end
-        .text-lg.text-color.mr-3 Date filter:
-        Calendar(selection-mode="range" v-model="dateFilter")
-        PButton(v-if="dateFilter.length && dateFilter.some(date => date)" @click="dateFilter=[]" icon="pi pi-times" class="p-button-rounded p-button-text") 
+      .flex.align-items-center.justify-content-between
+        div
+          .flex.align-items-center(v-if="dateFilter.length === 2 && dateFilter.every(date => date)")
+            .text-lg.text-color.mr-2 Filtered calorie count: 
+            .text-lg.text-primary {{filteredCalorieCount}}
+        .flex.align-items-center
+          .text-lg.text-color.mr-3 Date filter:
+          Calendar(selection-mode="range" v-model="dateFilter")
+          PButton(v-if="dateFilter.length && dateFilter.some(date => date)" @click="dateFilter=[]" icon="pi pi-times" class="p-button-rounded p-button-text") 
     Column(field="name" header="Name" :sortable="true")
     Column(v-if="auth.getRoles.includes('ADMIN')" field="user.email" header="User" :sortable="true")
     Column(field="calorieCount" header="Calories" :sortable="true")
@@ -54,6 +59,12 @@ const toast = useToast();
 const stat = useStatStore();
 
 const foodRecord = useFoodRecordStore();
+
+const filteredCalorieCount = computed(() => {
+  return filteredFoodRecords.value.reduce((prev, current) => {
+    return prev + current.calorieCount;
+  }, 0);
+});
 
 const handleDeleteItem = (item: { _id: string; name: string }) => {
   confirm.require({

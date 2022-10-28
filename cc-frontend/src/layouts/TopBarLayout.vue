@@ -44,6 +44,7 @@ const loading = ref(false);
 onMounted(async () => {
   await authStore.fetchAuth();
   stat.fetchTodaysCalorieCount();
+  stat.fetchAdminStats();
   user.fetchUserList();
 });
 
