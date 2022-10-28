@@ -7,17 +7,21 @@ interface createFoodRecordDto {
   name: string;
   calorieCount: number;
   date: string;
+  user?: string;
+}
+
+interface editFoodRecordDto extends createFoodRecordDto {
+  _id: string;
 }
 
 export const useFoodRecordStore = defineStore("foodRecord", {
   state: () => ({ foodRecords: [] }),
   actions: {
     async submitFoodRecord(data: createFoodRecordDto) {
-      try {
-        await axios.post(`${baseUrl}/foodrecord`, data);
-      } catch (error) {
-        console.log(error);
-      }
+      await axios.post(`${baseUrl}/foodrecord`, data);
+    },
+    async editFoodRecord(data: editFoodRecordDto) {
+      await axios.put(`${baseUrl}/foodrecord/${data._id}`, data);
     },
     async fetchFoodRecords() {
       try {
@@ -28,12 +32,8 @@ export const useFoodRecordStore = defineStore("foodRecord", {
       }
     },
     async deleteFoodRecord(id: string) {
-      try {
-        await axios.delete(`${baseUrl}/foodrecord/${id}`);
-        await this.fetchFoodRecords();
-      } catch (error) {
-        console.log(error);
-      }
+      await axios.delete(`${baseUrl}/foodrecord/${id}`);
+      await this.fetchFoodRecords();
     },
   },
   getters: {

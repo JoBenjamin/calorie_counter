@@ -7,12 +7,13 @@ import {
   HttpStatus,
   Param,
   Post,
+  Put,
   Req,
   UseGuards,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
-import { createFoodRecordDto } from './foodrecord.dto';
+import { createFoodRecordDto, editFoodRecordDto } from './foodrecord.dto';
 import { FoodRecord, FoodRecordDocument } from './foodrecord.schema';
 import { AuthGuard } from '@nestjs/passport';
 import { Roles } from 'src/decorators/roles.decorator';
@@ -32,13 +33,30 @@ export class FoodrecordController {
     @Body() createFoodRecordDto: createFoodRecordDto,
     @Req() req,
   ) {
-    const foodRecordPrimer: FoodRecord = {
+    const foodRecordPrimer = {
       ...createFoodRecordDto,
       date: new Date(createFoodRecordDto.date),
-      user: req.user._id,
     };
+    if (!createFoodRecordDto.user) {
+      foodRecordPrimer.user = req.user._id;
+    }
     const newRecord = await this.foodRecordModel.create(foodRecordPrimer);
     return newRecord;
+  }
+
+  @Put('/:id')
+  @Roles(UserRolesEnum.ADMIN)
+  @UseGuards(RolesGuard)
+  async editFoodRecord(@Param('id') id, @Body() dto: editFoodRecordDto) {
+    if (!mongoose.isValidObjectId(id)) {
+      throw new HttpException('INVALID_ID', HttpStatus.BAD_REQUEST);
+    }
+
+    const result = await this.foodRecordModel.findByIdAndUpdate(id, dto, {
+      new: true,
+    });
+
+    return result;
   }
 
   @Get()

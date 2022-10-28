@@ -10,6 +10,7 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
+import Dropdown from "primevue/dropdown";
 import InputNumber from "primevue/inputnumber";
 import ConfirmDialog from "primevue/confirmdialog";
 import Calendar from "primevue/calendar";
@@ -47,6 +48,7 @@ app.component("Dialog", Dialog);
 app.component("Calendar", Calendar);
 app.component("InputText", InputText);
 app.component("InputNumber", InputNumber);
+app.component("Dropdown", Dropdown);
 app.component("ConfirmDialog", ConfirmDialog);
 app.component("Toast", Toast);
 

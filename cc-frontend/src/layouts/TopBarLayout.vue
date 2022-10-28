@@ -17,12 +17,15 @@ import { useAuthStore } from "@/stores/auth";
 import ErrorCard from "@/components/ErrorCard.vue";
 import NavBarWidget from "@/components/NavBarWidget.vue";
 import { useStatStore } from "@/stores/stat";
+import { useUserStore } from "@/stores/user";
 
 const authStore = useAuthStore();
 const stat = useStatStore();
+const user = useUserStore();
 
-onMounted(() => {
-  authStore.fetchAuth();
+onMounted(async () => {
+  await authStore.fetchAuth();
   stat.fetchTodaysCalorieCount();
+  user.fetchUserList();
 });
 </script>

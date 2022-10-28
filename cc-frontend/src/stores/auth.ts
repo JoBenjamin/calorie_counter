@@ -5,7 +5,12 @@ import axios from "axios";
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
 export const useAuthStore = defineStore("auth", {
-  state: () => ({ email: "", authError: false, roles: [] }),
+  state: () => ({
+    email: "",
+    userId: "",
+    authError: false,
+    roles: [] as string[],
+  }),
   actions: {
     async fetchAuth() {
       try {
@@ -16,6 +21,7 @@ export const useAuthStore = defineStore("auth", {
         }
         this.email = response.data.email;
         this.roles = response.data.roles;
+        this.userId = response.data._id;
         const stat = useStatStore();
         stat.setDailyLimit(response.data.dailyCalorieLimit);
         this.authError = false;
