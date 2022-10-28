@@ -16,40 +16,51 @@ DataTable(:value="filteredFoodRecords" :loading="loading" :paginator="true" :row
     Column(v-if="auth.getRoles.includes('ADMIN')" header="Actions" field="_id")
       template(#body="{ data }")
         PButton(icon="pi pi-pencil" class="p-button-rounded p-button-text" @click="handleEditItem(data)")
-        PButton(icon="pi pi-trash" class="p-button-rounded p-button-text" @click="handleDeleteItem(data._id)")
-ConfirmDialog
+        PButton(icon="pi pi-trash" class="p-button-rounded p-button-text" @click="handleDeleteItem(data)")
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 import { useFoodRecordStore } from "@/stores/foodRecord";
 import dayjs from "dayjs";
-import { computed } from "@vue/reactivity";
 import { useAuthStore } from "@/stores/auth";
 import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
 
 const loading = ref(false);
 const auth = useAuthStore();
 const confirm = useConfirm();
+const toast = useToast();
 
 const foodRecord = useFoodRecordStore();
 
-const handleDeleteItem = (id) => {
+const handleDeleteItem = (item: { _id: string; name: string }) => {
   confirm.require({
     message: "Are you sure you want to delete this item?",
-    header: "Delete confirmation",
+    header: `Delete "${item.name}"`,
     accept: async () => {
       try {
         loading.value = true;
-        await foodRecord.deleteFoodRecord(id);
+        await foodRecord.deleteFoodRecord(item._id);
+        toast.add({
+          severity: "success",
+          summary: "Item successfully deleted!",
+          detail: `${item.name} is no more!`,
+          life: 3000,
+        });
       } catch (error) {
+        toast.add({
+          severity: "error",
+          summary: "Oops something went wrong!",
+          detail: `Could not delete ${item.name}`,
+          life: 3000,
+        });
         console.log(error);
       } finally {
         loading.value = false;
       }
     },
   });
-  console.log("delete", id);
 };
 
 const handleEditItem = (id) => {

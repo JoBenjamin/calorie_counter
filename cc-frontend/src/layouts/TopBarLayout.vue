@@ -7,6 +7,8 @@
     .py-3.px-5.flex-grow-1
         slot(v-if="authStore.email")
         ErrorCard(v-else-if="authStore.authError" error-message="Couldn't authenticate user") 
+ConfirmDialog
+Toast(position="bottom-left")
 </template>
 
 <script setup lang="ts">

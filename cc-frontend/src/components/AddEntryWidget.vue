@@ -24,10 +24,12 @@ import { reactive, ref } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, minValue } from "@vuelidate/validators";
 import { useFoodRecordStore } from "@/stores/foodRecord";
+import { useToast } from "primevue/usetoast";
 
 const foodRecord = useFoodRecordStore();
 const loading = ref(false);
 const dialogOpen = ref(false);
+const toast = useToast();
 
 const formState = reactive({
   name: "",
@@ -51,6 +53,7 @@ const submitData = async () => {
   $v.value.$touch();
   if ($v.value.$invalid) return;
 
+  const itemName = formState.name;
   try {
     loading.value = true;
     await foodRecord.submitFoodRecord({
@@ -61,7 +64,19 @@ const submitData = async () => {
     dialogOpen.value = false;
     resetFieldData();
     foodRecord.fetchFoodRecords();
+    toast.add({
+      severity: "success",
+      summary: "Item successfully added!",
+      detail: `${itemName} is now on the list!`,
+      life: 3000,
+    });
   } catch (error) {
+    toast.add({
+      severity: "error",
+      summary: "Oops something went wrong!",
+      detail: `Could not add ${itemName}`,
+      life: 3000,
+    });
     console.log(error);
   } finally {
     loading.value = false;
