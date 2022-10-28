@@ -145,8 +145,8 @@ const filteredFoodRecords = computed(() => {
   const endDate = dayjs(dateFilter.value[1]);
   return foodRecord.getFoodRecords.filter((record) => {
     return (
-      dayjs(record.date).isAfter(startDate.subtract(1, "d")) &&
-      dayjs(record.date).isBefore(endDate.add(1, "d"))
+      dayjs(record.date).isAfter(startDate.startOf("d")) &&
+      dayjs(record.date).isBefore(endDate.endOf("d"))
     );
   });
 });

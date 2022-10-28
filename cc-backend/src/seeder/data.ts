@@ -3,6 +3,24 @@ import { v4 as uuid } from 'uuid';
 
 export const dailyCalorieLimit = 2100;
 
+export const foodNameList = [
+  'Pumpkin Pie',
+  'Potato Soup',
+  'Spaghetti',
+  'Meatballs',
+  'Brownies',
+  'Eggs',
+  'Hotdog',
+  'Hamburger',
+  'Beer',
+  'Salmon',
+  'Fried rice',
+  'Bagel',
+  'Cheese platter',
+  'Cheese cake',
+  'Frozen yogurt',
+];
+
 export const testUsers = [
   {
     firstName: 'Daniel',
