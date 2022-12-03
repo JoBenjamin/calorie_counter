@@ -24,7 +24,7 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Backend component of the calorie counter app built with Nest.js
 
 ## Installation
 
